@@ -1,0 +1,244 @@
+{
+ "info": {
+  "metagame": "gen9championsvgc2026regmc",
+  "cutoff": 1760,
+  "number of battles": 1631943
+ },
+ "data": {
+  "Rillaboom": {
+   "Raw count": 6000,
+   "usage": 0.466,
+   "Viability Ceiling": [
+    4,
+    100,
+    100,
+    100
+   ],
+   "Happiness": {},
+   "Abilities": {
+    "grassysurge": 5995,
+    "overgrow": 15
+   },
+   "Items": {
+    "miracleseed": 3756,
+    "sitrusberry": 575,
+    "lifeorb": 507
+   },
+   "Moves": {
+    "grassyglide": 5929,
+    "fakeout": 5928,
+    "woodhammer": 5122,
+    "uturn": 4000
+   },
+   "Tera Types": {
+    "nothing": 6010
+   },
+   "Spreads": {
+    "Adamant:32/32/0/0/2/0": 2404.0,
+    "Jolly:2/32/0/0/0/32": 1803.0
+   },
+   "Teammates": {
+    "Incineroar": 2464,
+    "Sneasler": 2070,
+    "Salamence-Mega": 2055
+   },
+   "Checks and Counters": {
+    "Sneasler": {"n": 34.1, "p": 0.45, "d": 0.085},
+    "Incineroar": {"n": 20.0, "p": 0.3, "d": 0.05}
+   }
+  },
+  "Incineroar": {
+   "Raw count": 4000,
+   "usage": 0.317,
+   "Viability Ceiling": [
+    4,
+    100,
+    100,
+    100
+   ],
+   "Happiness": {},
+   "Abilities": {
+    "intimidate": 3990,
+    "blaze": 10
+   },
+   "Items": {
+    "safetygoggles": 2000,
+    "sitrusberry": 1500
+   },
+   "Moves": {
+    "fakeout": 3900,
+    "partingshot": 3500,
+    "knockoff": 3000,
+    "flareblitz": 2800
+   },
+   "Tera Types": {
+    "nothing": 4000
+   },
+   "Spreads": {
+    "Adamant:32/32/0/0/2/0": 1600.0,
+    "Jolly:2/32/0/0/0/32": 1200.0
+   },
+   "Teammates": {
+    "Rillaboom": 1800,
+    "Sneasler": 1200,
+    "Pikachu": 50
+   },
+   "Checks and Counters": {
+    "Rillaboom": {"n": 25.0, "p": 0.4, "d": 0.06},
+    "Sneasler": {"n": 10.0, "p": 0.5, "d": 0.1}
+   }
+  },
+  "Sneasler": {
+   "Raw count": 4500,
+   "usage": 0.371,
+   "Viability Ceiling": [
+    4,
+    100,
+    100,
+    100
+   ],
+   "Happiness": {},
+   "Abilities": {
+    "unburden": 4480
+   },
+   "Items": {
+    "focussash": 3000
+   },
+   "Moves": {
+    "direclaw": 4400
+   },
+   "Tera Types": {
+    "nothing": 4480
+   },
+   "Spreads": {
+    "Adamant:32/32/0/0/2/0": 1792.0,
+    "Jolly:2/32/0/0/0/32": 1344.0
+   },
+   "Teammates": {
+    "Rillaboom": 2000,
+    "Incineroar": 1500
+   },
+   "Checks and Counters": {}
+  },
+  "Salamence-Mega": {
+   "Raw count": 3400,
+   "usage": 0.281,
+   "Viability Ceiling": [
+    4,
+    100,
+    100,
+    100
+   ],
+   "Happiness": {},
+   "Abilities": {
+    "aerilate": 3400
+   },
+   "Items": {
+    "salamencite": 3400
+   },
+   "Moves": {
+    "airslash": 3300
+   },
+   "Tera Types": {
+    "nothing": 3400
+   },
+   "Spreads": {
+    "Adamant:32/32/0/0/2/0": 1360.0,
+    "Jolly:2/32/0/0/0/32": 1020.0
+   },
+   "Teammates": {
+    "Rillaboom": 1800
+   },
+   "Checks and Counters": {}
+  },
+  "Urshifu-Rapid-Strike": {
+   "Raw count": 1800,
+   "usage": 0.15,
+   "Viability Ceiling": [
+    4,
+    100,
+    100,
+    100
+   ],
+   "Happiness": {},
+   "Abilities": {
+    "unseenfist": 1800
+   },
+   "Items": {
+    "choicescarf": 900
+   },
+   "Moves": {
+    "surgingstrikes": 1790
+   },
+   "Tera Types": {
+    "nothing": 1800
+   },
+   "Spreads": {
+    "Adamant:32/32/0/0/2/0": 720.0,
+    "Jolly:2/32/0/0/0/32": 540.0
+   },
+   "Teammates": {},
+   "Checks and Counters": {}
+  },
+  "Urshifu-Single-Strike": {
+   "Raw count": 600,
+   "usage": 0.05,
+   "Viability Ceiling": [
+    4,
+    100,
+    100,
+    100
+   ],
+   "Happiness": {},
+   "Abilities": {
+    "unseenfist": 600
+   },
+   "Items": {
+    "focussash": 300
+   },
+   "Moves": {
+    "wickedblow": 590
+   },
+   "Tera Types": {
+    "nothing": 600
+   },
+   "Spreads": {
+    "Adamant:32/32/0/0/2/0": 240.0,
+    "Jolly:2/32/0/0/0/32": 180.0
+   },
+   "Teammates": {},
+   "Checks and Counters": {}
+  },
+  "Pikachu": {
+   "Raw count": 30,
+   "usage": 0.002,
+   "Viability Ceiling": [
+    4,
+    100,
+    100,
+    100
+   ],
+   "Happiness": {},
+   "Abilities": {
+    "static": 30
+   },
+   "Items": {
+    "lightball": 30
+   },
+   "Moves": {
+    "voltswitch": 30
+   },
+   "Tera Types": {
+    "nothing": 30
+   },
+   "Spreads": {
+    "Adamant:32/32/0/0/2/0": 12.0,
+    "Jolly:2/32/0/0/0/32": 9.0
+   },
+   "Teammates": {
+    "Incineroar": 10
+   },
+   "Checks and Counters": {}
+  }
+ }
+}

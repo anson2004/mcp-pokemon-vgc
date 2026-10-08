@@ -1,0 +1,283 @@
+{
+ "id": 25,
+ "name": "pikachu",
+ "is_legendary": false,
+ "is_mythical": false,
+ "varieties": [
+  {
+   "is_default": true,
+   "pokemon": {
+    "name": "pikachu",
+    "url": "https://pokeapi.co/api/v2/pokemon/25/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "pikachu-rock-star",
+    "url": "https://pokeapi.co/api/v2/pokemon/10080/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "pikachu-belle",
+    "url": "https://pokeapi.co/api/v2/pokemon/10081/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "pikachu-pop-star",
+    "url": "https://pokeapi.co/api/v2/pokemon/10082/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "pikachu-phd",
+    "url": "https://pokeapi.co/api/v2/pokemon/10083/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "pikachu-libre",
+    "url": "https://pokeapi.co/api/v2/pokemon/10084/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "pikachu-cosplay",
+    "url": "https://pokeapi.co/api/v2/pokemon/10085/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "pikachu-original-cap",
+    "url": "https://pokeapi.co/api/v2/pokemon/10094/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "pikachu-hoenn-cap",
+    "url": "https://pokeapi.co/api/v2/pokemon/10095/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "pikachu-sinnoh-cap",
+    "url": "https://pokeapi.co/api/v2/pokemon/10096/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "pikachu-unova-cap",
+    "url": "https://pokeapi.co/api/v2/pokemon/10097/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "pikachu-kalos-cap",
+    "url": "https://pokeapi.co/api/v2/pokemon/10098/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "pikachu-alola-cap",
+    "url": "https://pokeapi.co/api/v2/pokemon/10099/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "pikachu-partner-cap",
+    "url": "https://pokeapi.co/api/v2/pokemon/10148/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "pikachu-starter",
+    "url": "https://pokeapi.co/api/v2/pokemon/10158/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "pikachu-world-cap",
+    "url": "https://pokeapi.co/api/v2/pokemon/10160/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "pikachu-gmax",
+    "url": "https://pokeapi.co/api/v2/pokemon/10199/"
+   }
+  }
+ ],
+ "names": [
+  {
+   "name": "ピカチュウ",
+   "language": {
+    "name": "ja-hrkt",
+    "url": "https://pokeapi.co/api/v2/language/1/"
+   }
+  },
+  {
+   "name": "피카츄",
+   "language": {
+    "name": "ko",
+    "url": "https://pokeapi.co/api/v2/language/3/"
+   }
+  },
+  {
+   "name": "皮卡丘",
+   "language": {
+    "name": "zh-hant",
+    "url": "https://pokeapi.co/api/v2/language/4/"
+   }
+  },
+  {
+   "name": "Pikachu",
+   "language": {
+    "name": "en",
+    "url": "https://pokeapi.co/api/v2/language/9/"
+   }
+  },
+  {
+   "name": "ピカチュウ",
+   "language": {
+    "name": "ja",
+    "url": "https://pokeapi.co/api/v2/language/11/"
+   }
+  },
+  {
+   "name": "皮卡丘",
+   "language": {
+    "name": "zh-hans",
+    "url": "https://pokeapi.co/api/v2/language/12/"
+   }
+  }
+ ],
+ "genera": [
+  {
+   "genus": "ねずみポケモン",
+   "language": {
+    "name": "ja-hrkt",
+    "url": "https://pokeapi.co/api/v2/language/1/"
+   }
+  },
+  {
+   "genus": "쥐포켓몬",
+   "language": {
+    "name": "ko",
+    "url": "https://pokeapi.co/api/v2/language/3/"
+   }
+  },
+  {
+   "genus": "鼠寶可夢",
+   "language": {
+    "name": "zh-hant",
+    "url": "https://pokeapi.co/api/v2/language/4/"
+   }
+  },
+  {
+   "genus": "Mouse Pokémon",
+   "language": {
+    "name": "en",
+    "url": "https://pokeapi.co/api/v2/language/9/"
+   }
+  },
+  {
+   "genus": "ねずみポケモン",
+   "language": {
+    "name": "ja",
+    "url": "https://pokeapi.co/api/v2/language/11/"
+   }
+  },
+  {
+   "genus": "鼠宝可梦",
+   "language": {
+    "name": "zh-hans",
+    "url": "https://pokeapi.co/api/v2/language/12/"
+   }
+  }
+ ],
+ "flavor_text_entries": [
+  {
+   "flavor_text": "Possesses cheek sacs in which it stores electricity. This clever\nforest-dweller roasts tough berries with an electric shock before\nconsuming them.",
+   "language": {
+    "name": "en",
+    "url": "https://pokeapi.co/api/v2/language/9/"
+   },
+   "version": {
+    "name": "legends-arceus",
+    "url": "https://pokeapi.co/api/v2/version/39/"
+   }
+  },
+  {
+   "flavor_text": "おたがいの　しっぽを　くっつけて\nでんきを　ながしあうのが\nピカチュウ　どうしの　あいさつだ。",
+   "language": {
+    "name": "ja-hrkt",
+    "url": "https://pokeapi.co/api/v2/language/1/"
+   },
+   "version": {
+    "name": "shield",
+    "url": "https://pokeapi.co/api/v2/version/34/"
+   }
+  },
+  {
+   "flavor_text": "서로의 꼬리를 붙여서\n전기를 흐르게 하는 게\n피카츄 사이의 인사법이다.",
+   "language": {
+    "name": "ko",
+    "url": "https://pokeapi.co/api/v2/language/3/"
+   },
+   "version": {
+    "name": "shield",
+    "url": "https://pokeapi.co/api/v2/version/34/"
+   }
+  },
+  {
+   "flavor_text": "おたがいの　しっぽを　くっつけて\n電気を　流しあうのが\nピカチュウ　同士の　挨拶だ。",
+   "language": {
+    "name": "ja",
+    "url": "https://pokeapi.co/api/v2/language/11/"
+   },
+   "version": {
+    "name": "shield",
+    "url": "https://pokeapi.co/api/v2/version/34/"
+   }
+  },
+  {
+   "flavor_text": "皮卡丘們把尾巴\n貼在一起交換電流，\n其實是在互相打招呼。",
+   "language": {
+    "name": "zh-hant",
+    "url": "https://pokeapi.co/api/v2/language/4/"
+   },
+   "version": {
+    "name": "shield",
+    "url": "https://pokeapi.co/api/v2/version/34/"
+   }
+  },
+  {
+   "flavor_text": "皮卡丘们把尾巴\n贴在一起交换电流，\n其实是在互相打招呼。",
+   "language": {
+    "name": "zh-hans",
+    "url": "https://pokeapi.co/api/v2/language/12/"
+   },
+   "version": {
+    "name": "shield",
+    "url": "https://pokeapi.co/api/v2/version/34/"
+   }
+  }
+ ]
+}

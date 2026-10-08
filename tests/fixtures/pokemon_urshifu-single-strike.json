@@ -1,0 +1,92 @@
+{
+ "id": 892,
+ "name": "urshifu-single-strike",
+ "height": 19,
+ "weight": 1050,
+ "types": [
+  {
+   "slot": 1,
+   "type": {
+    "name": "fighting",
+    "url": "https://pokeapi.co/api/v2/type/2/"
+   }
+  },
+  {
+   "slot": 2,
+   "type": {
+    "name": "dark",
+    "url": "https://pokeapi.co/api/v2/type/17/"
+   }
+  }
+ ],
+ "abilities": [
+  {
+   "is_hidden": false,
+   "slot": 1,
+   "ability": {
+    "name": "unseen-fist",
+    "url": "https://pokeapi.co/api/v2/ability/260/"
+   }
+  }
+ ],
+ "stats": [
+  {
+   "base_stat": 100,
+   "effort": 0,
+   "stat": {
+    "name": "hp",
+    "url": "https://pokeapi.co/api/v2/stat/1/"
+   }
+  },
+  {
+   "base_stat": 130,
+   "effort": 3,
+   "stat": {
+    "name": "attack",
+    "url": "https://pokeapi.co/api/v2/stat/2/"
+   }
+  },
+  {
+   "base_stat": 100,
+   "effort": 0,
+   "stat": {
+    "name": "defense",
+    "url": "https://pokeapi.co/api/v2/stat/3/"
+   }
+  },
+  {
+   "base_stat": 63,
+   "effort": 0,
+   "stat": {
+    "name": "special-attack",
+    "url": "https://pokeapi.co/api/v2/stat/4/"
+   }
+  },
+  {
+   "base_stat": 60,
+   "effort": 0,
+   "stat": {
+    "name": "special-defense",
+    "url": "https://pokeapi.co/api/v2/stat/5/"
+   }
+  },
+  {
+   "base_stat": 97,
+   "effort": 0,
+   "stat": {
+    "name": "speed",
+    "url": "https://pokeapi.co/api/v2/stat/6/"
+   }
+  }
+ ],
+ "species": {
+  "name": "urshifu",
+  "url": "https://pokeapi.co/api/v2/pokemon-species/892/"
+ },
+ "forms": [
+  {
+   "name": "urshifu-single-strike",
+   "url": "https://pokeapi.co/api/v2/pokemon-form/892/"
+  }
+ ]
+}

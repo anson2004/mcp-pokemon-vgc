@@ -1,0 +1,192 @@
+{
+ "id": 892,
+ "name": "urshifu",
+ "is_legendary": true,
+ "is_mythical": false,
+ "varieties": [
+  {
+   "is_default": true,
+   "pokemon": {
+    "name": "urshifu-single-strike",
+    "url": "https://pokeapi.co/api/v2/pokemon/892/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "urshifu-rapid-strike",
+    "url": "https://pokeapi.co/api/v2/pokemon/10191/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "urshifu-single-strike-gmax",
+    "url": "https://pokeapi.co/api/v2/pokemon/10226/"
+   }
+  },
+  {
+   "is_default": false,
+   "pokemon": {
+    "name": "urshifu-rapid-strike-gmax",
+    "url": "https://pokeapi.co/api/v2/pokemon/10227/"
+   }
+  }
+ ],
+ "names": [
+  {
+   "name": "ウーラオス",
+   "language": {
+    "name": "ja-hrkt",
+    "url": "https://pokeapi.co/api/v2/language/1/"
+   }
+  },
+  {
+   "name": "우라오스",
+   "language": {
+    "name": "ko",
+    "url": "https://pokeapi.co/api/v2/language/3/"
+   }
+  },
+  {
+   "name": "武道熊師",
+   "language": {
+    "name": "zh-hant",
+    "url": "https://pokeapi.co/api/v2/language/4/"
+   }
+  },
+  {
+   "name": "Urshifu",
+   "language": {
+    "name": "en",
+    "url": "https://pokeapi.co/api/v2/language/9/"
+   }
+  },
+  {
+   "name": "ウーラオス",
+   "language": {
+    "name": "ja",
+    "url": "https://pokeapi.co/api/v2/language/11/"
+   }
+  },
+  {
+   "name": "武道熊师",
+   "language": {
+    "name": "zh-hans",
+    "url": "https://pokeapi.co/api/v2/language/12/"
+   }
+  }
+ ],
+ "genera": [
+  {
+   "genus": "けんぽうポケモン",
+   "language": {
+    "name": "ja-hrkt",
+    "url": "https://pokeapi.co/api/v2/language/1/"
+   }
+  },
+  {
+   "genus": "권법포켓몬",
+   "language": {
+    "name": "ko",
+    "url": "https://pokeapi.co/api/v2/language/3/"
+   }
+  },
+  {
+   "genus": "拳法寶可夢",
+   "language": {
+    "name": "zh-hant",
+    "url": "https://pokeapi.co/api/v2/language/4/"
+   }
+  },
+  {
+   "genus": "Wushu Pokémon",
+   "language": {
+    "name": "en",
+    "url": "https://pokeapi.co/api/v2/language/9/"
+   }
+  },
+  {
+   "genus": "けんぽうポケモン",
+   "language": {
+    "name": "ja",
+    "url": "https://pokeapi.co/api/v2/language/11/"
+   }
+  },
+  {
+   "genus": "拳法宝可梦",
+   "language": {
+    "name": "zh-hans",
+    "url": "https://pokeapi.co/api/v2/language/12/"
+   }
+  }
+ ],
+ "flavor_text_entries": [
+  {
+   "flavor_text": "とおい　ちほうの　さんがくちたいで\nくらす。　だんがいぜっぺきを　はしり\nあしこしを　きたえ　わざを　みがく。",
+   "language": {
+    "name": "ja-hrkt",
+    "url": "https://pokeapi.co/api/v2/language/1/"
+   },
+   "version": {
+    "name": "shield",
+    "url": "https://pokeapi.co/api/v2/version/34/"
+   }
+  },
+  {
+   "flavor_text": "먼 지방의 산악지대에 산다.\n낭떠러지 절벽을 달리며\n하체를 단련하고 기술을 연마한다.",
+   "language": {
+    "name": "ko",
+    "url": "https://pokeapi.co/api/v2/language/3/"
+   },
+   "version": {
+    "name": "shield",
+    "url": "https://pokeapi.co/api/v2/version/34/"
+   }
+  },
+  {
+   "flavor_text": "棲息在遙遠地區的山岳地帶。\n會在斷崖絕壁上來回奔跑\n鍛鍊下盤，磨練招式。",
+   "language": {
+    "name": "zh-hant",
+    "url": "https://pokeapi.co/api/v2/language/4/"
+   },
+   "version": {
+    "name": "shield",
+    "url": "https://pokeapi.co/api/v2/version/34/"
+   }
+  },
+  {
+   "flavor_text": "Inhabiting the mountains of a distant region, this\nPokémon races across sheer cliffs, training its legs\nand refining its moves.",
+   "language": {
+    "name": "en",
+    "url": "https://pokeapi.co/api/v2/language/9/"
+   },
+   "version": {
+    "name": "shield",
+    "url": "https://pokeapi.co/api/v2/version/34/"
+   }
+  },
+  {
+   "flavor_text": "遠い　地方の　山岳地帯で\n暮らす。　断崖絶壁を　走り\n足腰を　鍛え　技を　磨く。",
+   "language": {
+    "name": "ja",
+    "url": "https://pokeapi.co/api/v2/language/11/"
+   },
+   "version": {
+    "name": "shield",
+    "url": "https://pokeapi.co/api/v2/version/34/"
+   }
+  },
+  {
+   "flavor_text": "生活在遥远地区的山岳地带。\n通过在断崖绝壁上奔跑\n来锻炼腰腿，磨炼招式。",
+   "language": {
+    "name": "zh-hans",
+    "url": "https://pokeapi.co/api/v2/language/12/"
+   },
+   "version": {
+    "name": "shield",
+    "url": "https://pokeapi.co/api/v2/version/34/"
+   }
+  }
+ ]
+}

@@ -1,0 +1,97 @@
+pokemon_species_id,local_language_id,name,genus
+25,1,ピカチュウ,ねずみポケモン
+25,2,Pikachu,
+25,3,피카츄,쥐포켓몬
+25,4,皮卡丘,鼠寶可夢
+25,5,Pikachu,Pokémon Souris
+25,6,Pikachu,Maus-Pokémon
+25,7,Pikachu,Pokémon Ratón
+25,8,Pikachu,Pokémon Topo
+25,9,Pikachu,Mouse Pokémon
+25,11,ピカチュウ,ねずみポケモン
+25,12,皮卡丘,鼠宝可梦
+25,14,Pikachu,Pokémon Ratón
+26,1,ライチュウ,ねずみポケモン
+26,2,Raichu,
+26,3,라이츄,쥐포켓몬
+26,4,雷丘,鼠寶可夢
+26,5,Raichu,Pokémon Souris
+26,6,Raichu,Maus-Pokémon
+26,7,Raichu,Pokémon Ratón
+26,8,Raichu,Pokémon Topo
+26,9,Raichu,Mouse Pokémon
+26,11,ライチュウ,ねずみポケモン
+26,12,雷丘,鼠宝可梦
+26,14,Raichu,Pokémon Ratón
+172,1,ピチュー,こねずみポケモン
+172,2,Pichu,
+172,3,피츄,아기쥐포켓몬
+172,4,皮丘,小鼠寶可夢
+172,5,Pichu,Pokémon Minisouris
+172,6,Pichu,Babymaus-Pokémon
+172,7,Pichu,Pokémon Ratoncito
+172,8,Pichu,Pokémon Topino
+172,9,Pichu,Tiny Mouse Pokémon
+172,11,ピチュー,こねずみポケモン
+172,12,皮丘,小鼠宝可梦
+172,14,Pichu,Pokémon Ratoncito
+373,1,ボーマンダ,ドラゴンポケモン
+373,2,Bohmander,
+373,3,보만다,드래곤포켓몬
+373,4,暴飛龍,龍寶可夢
+373,5,Drattak,Pokémon Dragon
+373,6,Brutalanda,Drachen-Pokémon
+373,7,Salamence,Pokémon Dragón
+373,8,Salamence,Pokémon Drago
+373,9,Salamence,Dragon Pokémon
+373,11,ボーマンダ,ドラゴンポケモン
+373,12,暴飞龙,龙宝可梦
+373,14,Salamence,Pokémon Dragón
+727,1,ガオガエン,ヒールポケモン
+727,2,Gaogaen,
+727,3,어흥염,힐포켓몬
+727,4,熾焰咆哮虎,反派寶可夢
+727,5,Félinferno,Pokémon Vil Catcheur
+727,6,Fuegro,Fieslings-Pokémon
+727,7,Incineroar,Pokémon Rudo
+727,8,Incineroar,Pokémon Colpibassi
+727,9,Incineroar,Heel Pokémon
+727,11,ガオガエン,ヒールポケモン
+727,12,炽焰咆哮虎,反派宝可梦
+727,14,Incineroar,Pokémon Rudo
+812,1,ゴリランダー,ドラマーポケモン
+812,2,Gorirander,
+812,3,고릴타,드러머포켓몬
+812,4,轟擂金剛猩,鼓手寶可夢
+812,5,Gorythmic,Pokémon Batteur
+812,6,Gortrom,Drummer-Pokémon
+812,7,Rillaboom,Pokémon Percusión
+812,8,Rillaboom,Pokémon Percussione
+812,9,Rillaboom,Drummer Pokémon
+812,11,ゴリランダー,ドラマーポケモン
+812,12,轰擂金刚猩,鼓手宝可梦
+812,14,Rillaboom,Pokémon Percusión
+892,1,ウーラオス,けんぽうポケモン
+892,2,Wulaosu,
+892,3,우라오스,권법포켓몬
+892,4,武道熊師,拳法寶可夢
+892,5,Shifours,Pokémon Kung-fu
+892,6,Wulaosu,Kung-Fu-Pokémon
+892,7,Urshifu,Pokémon Kung-fu
+892,8,Urshifu,Pokémon Kung Fu
+892,9,Urshifu,Wushu Pokémon
+892,11,ウーラオス,けんぽうポケモン
+892,12,武道熊师,拳法宝可梦
+892,14,Urshifu,Pokémon Kung-fu
+903,1,オオニューラ,クライミングポケモン
+903,2,Ohnyula,
+903,3,포푸니크,클라이밍포켓몬
+903,4,大狃拉,攀崖寶可夢
+903,5,Farfurex,Pokémon Grimpeur
+903,6,Snieboss,Kletterei-Pokémon
+903,7,Sneasler,
+903,8,Sneasler,Pokémon Scalata
+903,9,Sneasler,Free Climb Pokémon
+903,11,オオニューラ,クライミングポケモン
+903,12,大狃拉,攀崖宝可梦
+903,14,Sneasler,
