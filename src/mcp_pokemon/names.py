@@ -143,9 +143,12 @@ def load_aliases(extra_path: str | None = None) -> dict[str, str]:
 
 
 class AmbiguousName(Exception):
-    def __init__(self, query: str, candidates: list[str]) -> None:
+    def __init__(
+        self, query: str, candidates: list[str], entries: list[SpeciesEntry] | None = None
+    ) -> None:
         self.query = query
         self.candidates = candidates
+        self.entries: list[SpeciesEntry] = entries or []
         super().__init__(
             f"'{query}' matches several Pokémon: {', '.join(candidates)}. Please be more specific."
         )
@@ -242,12 +245,13 @@ class NameIndex:
 
     def resolve_fuzzy(self, query: str) -> Resolution | None:
         """Unique substring match across all languages (e.g. 咆哮虎 -> 炽焰咆哮虎)."""
-        hits = self.search(query, limit=10)
+        hits = self.search(query, limit=200)  # all hits: callers may filter them further
         if len(hits) == 1:
             entry = hits[0]
             return Resolution(entry, note=f"'{query}' matched {self.display(entry, query)}")
         if len(hits) > 1:
-            raise AmbiguousName(query, [self.display(e, query) for e in hits])
+            shown = [self.display(e, query) for e in hits[:8]]
+            raise AmbiguousName(query, shown, hits)
         return None
 
     def suggestions(self, query: str, limit: int = 5) -> list[str]:

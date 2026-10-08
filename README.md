@@ -53,8 +53,8 @@ uv run mcp dev src/mcp_pokemon/server.py
 | `describe_pokemon(name, langs?, form?, include_flavor_text?)` | Localized names, genus, types, abilities, base stats, size. Pokédex entry text only with `include_flavor_text=true`. Accepts `皮卡丘`, `ピカチュウ`, `Pikachu`, Showdown names like `Urshifu-Rapid-Strike`, or `form="alola"`. |
 | `list_vgc_formats(month?)` | VGC formats and rating cutoffs available on Smogon for a month (default: latest). |
 | `top_vgc_usage(format_id?, rating?, month?, limit?)` | Usage ranking. |
-| `get_vgc_usage(pokemon, format_id?, rating?, month?, top_n?)` | One Pokémon's usage profile. |
-| `compare_vgc(pokemon_a, pokemon_b, ...)` | Two profiles side by side, shared teammates, head-to-head check scores and teammate rates. |
+| `get_vgc_usage(pokemon, format_id?, rating?, month?, top_n?)` | One Pokémon's usage profile. `top_n` (default 5) caps every list. |
+| `compare_vgc(pokemon_a, pokemon_b, ...)` | Two profiles side by side, shared teammates (max 8), head-to-head check scores and teammate rates. |
 
 Resource: `pokemon://formats/latest`.
 

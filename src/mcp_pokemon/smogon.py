@@ -16,7 +16,7 @@ from .models import (
     VgcFormat,
     VgcUsage,
 )
-from .names import NameIndex, fold
+from .names import AmbiguousName, NameIndex, Resolution, fold
 
 STATS_BASE = "https://www.smogon.com/stats/"
 MONTH_RE = re.compile(r'href="(\d{4}-\d{2})/"')
@@ -191,7 +191,18 @@ class SmogonClient:
         if index is not None:
             res = index.resolve(query)
             if res is None and not candidates:
-                res = index.resolve_fuzzy(query)  # may raise AmbiguousName
+                try:
+                    res = index.resolve_fuzzy(query)
+                except AmbiguousName as exc:
+                    # Keep only candidates that actually appear in this usage file.
+                    in_file = [e for e in exc.entries if by_prefix(fold(e.names.get("en", e.slug)))]
+                    if len(in_file) == 1:
+                        res = Resolution(in_file[0])
+                    else:
+                        shown = in_file or exc.entries
+                        raise UsageNotFound(
+                            query, [index.display(e, query) for e in shown][:8]
+                        ) from exc
             if res is not None:
                 if res.variety:
                     key = longest_key_prefix_of(fold(res.variety))
@@ -210,7 +221,7 @@ class SmogonClient:
         raise UsageNotFound(query, sorted(candidates)[:8])
 
     @staticmethod
-    def usage(chaos: ChaosFile, key: str, top_n: int = 8) -> VgcUsage:
+    def usage(chaos: ChaosFile, key: str, top_n: int = 5) -> VgcUsage:
         e = chaos.data[key]
         weight_total = sum(e.get("Abilities", {}).values()) or float(e.get("Raw count", 0))
         cc = [
@@ -232,7 +243,7 @@ class SmogonClient:
             moves=_ranked(e.get("Moves", {}), weight_total, top_n),
             items=_ranked(e.get("Items", {}), sum(e.get("Items", {}).values()), top_n),
             abilities=_ranked(e.get("Abilities", {}), weight_total, top_n),
-            tera_types=_ranked(tera, sum(tera.values()), top_n),
+            tera_types=_ranked(tera, sum(tera.values()), top_n) if tera else None,
             spreads=_ranked(e.get("Spreads", {}), sum(e.get("Spreads", {}).values()), top_n),
             teammates=_ranked(e.get("Teammates", {}), weight_total, top_n),
             checks_and_counters=cc[:top_n],
@@ -251,7 +262,7 @@ class SmogonClient:
         ]
 
     @classmethod
-    def compare(cls, chaos: ChaosFile, key_a: str, key_b: str, top_n: int = 8) -> VgcComparison:
+    def compare(cls, chaos: ChaosFile, key_a: str, key_b: str, top_n: int = 5) -> VgcComparison:
         a = cls.usage(chaos, key_a, top_n)
         b = cls.usage(chaos, key_b, top_n)
         ea, eb = chaos.data[key_a], chaos.data[key_b]
@@ -267,7 +278,7 @@ class SmogonClient:
 
         ta = {t.name for t in _ranked(ea.get("Teammates", {}), wa, 15)}
         tb = {t.name for t in _ranked(eb.get("Teammates", {}), wb, 15)}
-        shared = [n for n in chaos.ranking if n in ta and n in tb]
+        shared = [n for n in chaos.ranking if n in ta and n in tb][:8]
 
         return VgcComparison(
             format_id=chaos.format_id,

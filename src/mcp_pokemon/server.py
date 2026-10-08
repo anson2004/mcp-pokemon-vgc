@@ -137,7 +137,7 @@ async def get_vgc_usage(
     format_id: FormatParam = None,
     rating: RatingParam = None,
     month: MonthParam = None,
-    top_n: int = 8,
+    top_n: int = 5,
 ) -> VgcUsage:
     """VGC usage profile: usage %, moves, items, abilities, tera, spreads, teammates, checks."""
     try:
@@ -153,7 +153,7 @@ async def compare_vgc(
     format_id: FormatParam = None,
     rating: RatingParam = None,
     month: MonthParam = None,
-    top_n: int = 8,
+    top_n: int = 5,
 ) -> VgcComparison:
     """Compare two Pokémon's VGC usage side by side, with shared teammates and head-to-head data."""
     try:

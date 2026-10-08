@@ -32,7 +32,7 @@ def test_ranking_and_usage():
     assert u.moves[0].name == "grassyglide" and u.moves[0].percent == pytest.approx(98.65, abs=0.1)
     assert u.abilities[0].percent == pytest.approx(99.8, abs=0.1)
     assert u.items[0].percent == pytest.approx(77.6, abs=0.1)
-    assert u.tera_types == []  # 'nothing' is dropped
+    assert u.tera_types is None  # Champions: no Tera
     assert u.teammates[0].name == "Incineroar" and u.teammates[0].percent == pytest.approx(
         41.0, abs=0.1
     )

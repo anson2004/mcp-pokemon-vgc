@@ -2,7 +2,7 @@ import pytest
 
 from mcp_pokemon.names import AmbiguousName, NameIndex, load_aliases
 from mcp_pokemon.pokeapi import PokemonNotFound
-from mcp_pokemon.smogon import SmogonClient
+from mcp_pokemon.smogon import SmogonClient, UsageNotFound
 from mcp_pokemon.tools import describe, vgc
 
 from .conftest import fixture
@@ -56,6 +56,11 @@ def test_smogon_key_from_alias_prefix_and_fuzzy():
     assert SmogonClient.resolve_key(c, "urshifu-rs", idx) == "Urshifu-Rapid-Strike"
     assert SmogonClient.resolve_key(c, "超级暴飞龙", idx) == "Salamence-Mega"
     assert SmogonClient.resolve_key(c, "皮神", idx) == "Pikachu"
+    # ambiguous in the Pokédex (ピカチュウ/ライチュウ/ピチュー) but only Pikachu is in the file
+    assert SmogonClient.resolve_key(c, "チュ", idx) == "Pikachu"
+    with pytest.raises(UsageNotFound) as ei:
+        SmogonClient.resolve_key(c, "ウ", idx)  # matches nothing in the file uniquely
+    assert len(ei.value.suggestions) <= 8
 
 
 async def test_describe_fuzzy_and_alias(deps, mocked):

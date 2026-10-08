@@ -122,7 +122,9 @@ class VgcUsage(BaseModel):
     moves: list[RankedItem]
     items: list[RankedItem]
     abilities: list[RankedItem]
-    tera_types: list[RankedItem]
+    tera_types: list[RankedItem] | None = Field(
+        default=None, description="Null in formats without Terastallization (Champions)"
+    )
     spreads: list[RankedItem]
     teammates: list[RankedItem]
     checks_and_counters: list[CheckCounter]

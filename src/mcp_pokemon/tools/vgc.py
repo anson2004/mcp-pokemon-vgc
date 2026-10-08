@@ -35,7 +35,7 @@ async def get_vgc_usage(
     format_id: str | None = None,
     rating: int | None = None,
     month: str | None = None,
-    top_n: int = 8,
+    top_n: int = 5,
 ) -> VgcUsage:
     chaos = await _load(deps, format_id, rating, month)
     index = await deps.names.get()
@@ -50,7 +50,7 @@ async def compare_vgc(
     format_id: str | None = None,
     rating: int | None = None,
     month: str | None = None,
-    top_n: int = 8,
+    top_n: int = 5,
 ) -> VgcComparison:
     chaos = await _load(deps, format_id, rating, month)
     index = await deps.names.get()
