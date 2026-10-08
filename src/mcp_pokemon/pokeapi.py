@@ -153,7 +153,11 @@ class PokeApiClient:
         return str(varieties[0]["pokemon"]["name"])
 
     async def summary(
-        self, query: str, langs: tuple[Lang, ...], form: str | None = None
+        self,
+        query: str,
+        langs: tuple[Lang, ...],
+        form: str | None = None,
+        include_flavor_text: bool = False,
     ) -> PokemonSummary:
         species, pokemon, note = await self.resolve(query, form)
 
@@ -198,7 +202,9 @@ class PokeApiClient:
             height_m=pokemon["height"] / 10,
             weight_kg=pokemon["weight"] / 10,
             forms=[v["pokemon"]["name"] for v in species["varieties"]],
-            flavor_text=pick_flavor(species["flavor_text_entries"], langs),
+            flavor_text=(
+                pick_flavor(species["flavor_text_entries"], langs) if include_flavor_text else None
+            ),
             is_legendary=species["is_legendary"],
             is_mythical=species["is_mythical"],
             note=note,

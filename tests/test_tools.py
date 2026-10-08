@@ -7,19 +7,19 @@ from mcp_pokemon.tools import describe, vgc
 async def test_describe_pikachu_multilingual(deps, mocked):
     s = await describe.describe_pokemon(deps, "皮卡丘")
     assert s.slug == "pikachu" and s.species_id == 25
-    assert s.names == {
-        "en": "Pikachu",
-        "ja": "ピカチュウ",
-        "zh-hans": "皮卡丘",
-        "zh-hant": "皮卡丘",
-    }
+    assert s.names == {"en": "Pikachu", "ja": "ピカチュウ", "zh-hans": "皮卡丘"}
     assert s.genus["ja"] == "ねずみポケモン"
     assert [t.slug for t in s.types] == ["electric"]
     assert s.types[0].names["zh-hans"] == "电"
     assert s.stats.total == 320 and s.stats.speed == 90
     assert s.abilities[0].slug == "static" and s.abilities[1].is_hidden
     assert s.height_m == 0.4 and s.weight_kg == 6.0
-    assert "en" in s.flavor_text
+    assert s.flavor_text is None
+    s = await describe.describe_pokemon(
+        deps, "皮卡丘", langs=["en", "zh-hant"], include_flavor_text=True
+    )
+    assert s.names == {"en": "Pikachu", "zh-hant": "皮卡丘"}
+    assert set(s.flavor_text) == {"en", "zh-hant"}
 
 
 async def test_describe_form_resolution(deps, mocked):

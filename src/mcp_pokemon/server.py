@@ -42,7 +42,7 @@ mcp = MCPServer(
 
 LangsParam = Annotated[
     list[Lang] | None,
-    Field(description="Languages to include; default en, ja, zh-hans, zh-hant. Also ja-hrkt, ko."),
+    Field(description="Languages to include; default en, zh-hans, ja. Also zh-hant, ja-hrkt, ko."),
 ]
 FormatParam = Annotated[
     str | None,
@@ -95,10 +95,15 @@ async def describe_pokemon(
     form: Annotated[
         str | None, Field(description="Optional form, e.g. 'alola', 'mega', 'therian'")
     ] = None,
+    include_flavor_text: Annotated[
+        bool, Field(description="Also return the Pokédex entry text per language (longer output)")
+    ] = False,
 ) -> PokemonSummary:
-    """Describe a Pokémon: localized names, genus, types, abilities, base stats, flavor text."""
+    """Describe a Pokémon: localized names, genus, types, abilities, base stats, size."""
     try:
-        return await describe_tools.describe_pokemon(get_deps(), name, langs, form)
+        return await describe_tools.describe_pokemon(
+            get_deps(), name, langs, form, include_flavor_text
+        )
     except Exception as exc:
         raise _wrap(exc) from exc
 

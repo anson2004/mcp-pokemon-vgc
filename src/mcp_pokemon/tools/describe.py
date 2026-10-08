@@ -36,6 +36,10 @@ async def resolve_pokemon(
 
 
 async def describe_pokemon(
-    deps: Deps, name: str, langs: list[Lang] | None = None, form: str | None = None
+    deps: Deps,
+    name: str,
+    langs: list[Lang] | None = None,
+    form: str | None = None,
+    include_flavor_text: bool = False,
 ) -> PokemonSummary:
-    return await deps.pokeapi.summary(name, _langs(langs), form)
+    return await deps.pokeapi.summary(name, _langs(langs), form, include_flavor_text)

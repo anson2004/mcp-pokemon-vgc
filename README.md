@@ -49,8 +49,8 @@ uv run mcp dev src/mcp_pokemon/server.py
 
 | Tool | What it does |
 |---|---|
-| `search_pokemon(query, langs?, limit?)` | Find species by name in any supported language (exact, prefix, substring). |
-| `describe_pokemon(name, langs?, form?)` | Localized names, genus, types, abilities, base stats, size, flavor text. Accepts `皮卡丘`, `ピカチュウ`, `Pikachu`, Showdown names like `Urshifu-Rapid-Strike`, or `form="alola"`. |
+| `resolve_pokemon(query, langs?, limit?)` | Nickname or partial name in any language → official names (`咆哮虎` → 炽焰咆哮虎 / Incineroar). Returns one match, or a candidates list when ambiguous. Index only, no stats. |
+| `describe_pokemon(name, langs?, form?, include_flavor_text?)` | Localized names, genus, types, abilities, base stats, size. Pokédex entry text only with `include_flavor_text=true`. Accepts `皮卡丘`, `ピカチュウ`, `Pikachu`, Showdown names like `Urshifu-Rapid-Strike`, or `form="alola"`. |
 | `list_vgc_formats(month?)` | VGC formats and rating cutoffs available on Smogon for a month (default: latest). |
 | `top_vgc_usage(format_id?, rating?, month?, limit?)` | Usage ranking. |
 | `get_vgc_usage(pokemon, format_id?, rating?, month?, top_n?)` | One Pokémon's usage profile. |
@@ -58,11 +58,12 @@ uv run mcp dev src/mcp_pokemon/server.py
 
 Resource: `pokemon://formats/latest`.
 
-Defaults: latest month, newest Pokémon Champions best-of-1 format, highest rating cutoff.
+Defaults: languages `en`, `zh-hans`, `ja` (add `zh-hant`, `ja-hrkt`, `ko` via `langs`); latest month,
+newest Pokémon Champions best-of-1 format, highest rating cutoff.
 
 ## Name resolution
 
-Every tool that takes a Pokémon name resolves it in this order:
+Every tool that takes a Pokémon name resolves it in this order (`resolve_pokemon` exposes the same chain directly):
 
 1. **Exact** official name in any supported language, or a PokéAPI / Showdown slug
    (`Pikachu`, `ピカチュウ`, `皮卡丘`, `Urshifu-Rapid-Strike`).

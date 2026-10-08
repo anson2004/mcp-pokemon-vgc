@@ -8,7 +8,7 @@ from pydantic import BaseModel, Field, computed_field
 
 Lang = Literal["en", "ja", "ja-hrkt", "zh-hans", "zh-hant", "ko"]
 ALL_LANGS: tuple[Lang, ...] = ("en", "ja", "ja-hrkt", "zh-hans", "zh-hant", "ko")
-DEFAULT_LANGS: tuple[Lang, ...] = ("en", "ja", "zh-hans", "zh-hant")
+DEFAULT_LANGS: tuple[Lang, ...] = ("en", "zh-hans", "ja")
 
 LocalizedText = dict[Lang, str]
 
@@ -79,7 +79,9 @@ class PokemonSummary(BaseModel):
     height_m: float
     weight_kg: float
     forms: list[str] = Field(description="All variety slugs of this species")
-    flavor_text: LocalizedText
+    flavor_text: LocalizedText | None = Field(
+        default=None, description="Pokédex entry per language; only when include_flavor_text=true"
+    )
     is_legendary: bool
     is_mythical: bool
     note: str | None = Field(default=None, description="Set when the name was matched fuzzily")
