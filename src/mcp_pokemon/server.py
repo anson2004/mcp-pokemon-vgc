@@ -12,7 +12,7 @@ from pydantic import Field
 from .deps import get_deps
 from .models import (
     Lang,
-    PokemonMatch,
+    NameResolution,
     PokemonSummary,
     UsageRank,
     VgcComparison,
@@ -31,7 +31,8 @@ mcp = MCPServer(
     "mcp-pokemon",
     instructions=(
         "Pokémon data in English, Japanese and Chinese (PokéAPI) plus VGC usage statistics "
-        "(Smogon). Use search_pokemon / describe_pokemon for Pokédex facts and "
+        "(Smogon). Use describe_pokemon for Pokédex facts, resolve_pokemon only to turn a "
+        "nickname into official names, and "
         "list_vgc_formats / top_vgc_usage / get_vgc_usage / compare_vgc for competitive data. "
         "Pokémon names may be given in any supported language, as common nicknames or "
         "short forms (咆哮虎, ガブ, Lando-T), with localized form prefixes (超级暴飞龙, "
@@ -61,14 +62,23 @@ def _wrap(exc: Exception) -> ToolError:
 
 
 @mcp.tool()
-async def search_pokemon(
-    query: Annotated[str, Field(description="Name or part of a name in any supported language")],
+async def resolve_pokemon(
+    query: Annotated[
+        str,
+        Field(
+            description="Nickname, short form or name in any language, e.g. 咆哮虎, ガブ, Lando-T"
+        ),
+    ],
     langs: LangsParam = None,
-    limit: int = 10,
-) -> list[PokemonMatch]:
-    """Find Pokémon species by name in English, Japanese, Chinese or Korean."""
+    limit: Annotated[int, Field(description="Max candidates when ambiguous")] = 8,
+) -> NameResolution:
+    """Turn a nickname or partial name into official names (en/ja/zh). Cheap: no stats fetched.
+
+    Use only when the user wants the name itself; describe_pokemon and the VGC tools already
+    accept nicknames directly.
+    """
     try:
-        return await describe_tools.search_pokemon(get_deps(), query, langs, limit)
+        return await describe_tools.resolve_pokemon(get_deps(), query, langs, limit)
     except Exception as exc:
         raise _wrap(exc) from exc
 

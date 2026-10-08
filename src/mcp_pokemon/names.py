@@ -311,11 +311,14 @@ class NameIndex:
                     add(e)
         return results[:limit]
 
-    def match(self, entry: SpeciesEntry, langs: tuple[Lang, ...]) -> PokemonMatch:
+    def match(
+        self, entry: SpeciesEntry, langs: tuple[Lang, ...], variety: str | None = None
+    ) -> PokemonMatch:
         return PokemonMatch(
             species_id=entry.species_id,
             slug=entry.slug,
             names={lang: entry.names[lang] for lang in langs if lang in entry.names},
+            variety=variety,
         )
 
 

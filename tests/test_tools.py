@@ -38,9 +38,26 @@ async def test_describe_unknown_suggests(deps, mocked):
     assert "No Pokémon matches" in str(ei.value)
 
 
-async def test_search(deps, mocked):
-    hits = await describe.search_pokemon(deps, "ピカ", langs=["en"])
-    assert hits[0].names == {"en": "Pikachu"}
+async def test_resolve_pokemon(deps, mocked):
+    r = await describe.resolve_pokemon(deps, "ピカ", langs=["en"])
+    assert r.resolved is not None and r.resolved.names == {"en": "Pikachu"}
+    assert r.resolved.variety is None and "matched" in r.note
+
+    r = await describe.resolve_pokemon(deps, "皮卡丘", langs=["en", "zh-hans"])
+    assert r.resolved.slug == "pikachu" and r.note is None and r.candidates == []
+
+    r = await describe.resolve_pokemon(deps, "urshifu-rs", langs=["en"])
+    assert r.resolved.slug == "urshifu" and r.resolved.variety == "urshifu-rapid-strike"
+
+    r = await describe.resolve_pokemon(deps, "超级暴飞龙", langs=["en"])
+    assert r.resolved.slug == "salamence" and r.resolved.variety == "salamence-mega"
+
+    r = await describe.resolve_pokemon(deps, "チュ", langs=["en"])
+    assert r.resolved is None and len(r.candidates) == 3 and "several" in r.note
+    assert {c.slug for c in r.candidates} == {"pikachu", "raichu", "pichu"}
+
+    r = await describe.resolve_pokemon(deps, "zzzz")
+    assert r.resolved is None and r.candidates == [] and r.note is None
 
 
 async def test_vgc_tools(deps, mocked):

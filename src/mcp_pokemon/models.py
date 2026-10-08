@@ -47,8 +47,23 @@ class AbilitySummary(BaseModel):
 
 class PokemonMatch(BaseModel):
     species_id: int
-    slug: str
+    slug: str = Field(description="PokéAPI species slug")
     names: LocalizedText
+    variety: str | None = Field(
+        default=None,
+        description="Variety slug when the query implied a form, e.g. 'landorus-therian'",
+    )
+
+
+class NameResolution(BaseModel):
+    query: str
+    resolved: PokemonMatch | None = Field(
+        description="The single match, or null if ambiguous/unknown"
+    )
+    note: str | None = Field(default=None, description="How a fuzzy or alias match was made")
+    candidates: list[PokemonMatch] = Field(
+        default_factory=list, description="Possible matches when the query is not unique"
+    )
 
 
 class PokemonSummary(BaseModel):
