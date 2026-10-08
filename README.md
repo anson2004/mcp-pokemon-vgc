@@ -60,6 +60,22 @@ Resource: `pokemon://formats/latest`.
 
 Defaults: latest month, newest Pokémon Champions best-of-1 format, highest rating cutoff.
 
+## Name resolution
+
+Every tool that takes a Pokémon name resolves it in this order:
+
+1. **Exact** official name in any supported language, or a PokéAPI / Showdown slug
+   (`Pikachu`, `ピカチュウ`, `皮卡丘`, `Urshifu-Rapid-Strike`).
+2. **Alias** from [`aliases.toml`](src/mcp_pokemon/aliases.toml): community nicknames that are not
+   part of an official name (`Lando-T`, `皮神`, `鬼龙`, `ガブ`).
+3. **Localized form prefix**: `超级暴飞龙` / `メガボーマンダ` → Mega Salamence, `阿罗拉九尾` → Alolan
+   Ninetales, `灵兽土地云` / `霊獣ランドロス` → Landorus-Therian.
+4. **Unique substring** of any official name: `咆哮虎` → 炽焰咆哮虎 (Incineroar), `Chomp` → Garchomp.
+   The result carries a `note` saying how it matched. If several Pokémon match, the tool returns
+   an error listing them in the script you typed (e.g. `炽焰咆哮虎 (Incineroar)`).
+
+Add your own nicknames in a TOML file with the same layout and point `MCP_POKEMON_ALIASES` at it.
+
 ## Notes
 
 - Pokémon Champions formats report spreads on a 0–32 point scale and have no Tera types.

@@ -1,0 +1,49 @@
+# Community nicknames that are NOT substrings of an official name.
+# alias = "pokeapi-slug"   (species slug, or a variety slug such as "landorus-therian")
+# Substrings of official names (咆哮虎 -> 炽焰咆哮虎, "Chomp" -> Garchomp) need no entry:
+# the name index already matches them.
+# Form prefixes are handled generically too: 超级/阿罗拉/伽勒尔/洗翠/帕底亚/灵兽/化身 and
+# メガ/アローラ/ガラル/ヒスイ/パルデア/霊獣/化身 (e.g. 超级暴飞龙, メガボーマンダ, 灵兽土地云).
+# Extra entries: set MCP_POKEMON_ALIASES=/path/to/your.toml with the same layout.
+
+[en]
+"lando-t" = "landorus-therian"
+"lando-i" = "landorus-incarnate"
+"torn-t" = "tornadus-therian"
+"thundy-t" = "thundurus-therian"
+"urshifu-rs" = "urshifu-rapid-strike"
+"urshifu-ss" = "urshifu-single-strike"
+"ogerpon-w" = "ogerpon-wellspring-mask"
+"ogerpon-h" = "ogerpon-hearthflame-mask"
+"ogerpon-c" = "ogerpon-cornerstone-mask"
+"caly-s" = "calyrex-shadow-rider"
+"caly-i" = "calyrex-ice-rider"
+"calyrex-s" = "calyrex-shadow-rider"
+"calyrex-i" = "calyrex-ice-rider"
+"zacian-c" = "zacian-crowned"
+"kyurem-b" = "kyurem-black"
+"kyurem-w" = "kyurem-white"
+"necrozma-dm" = "necrozma-dusk"
+"necrozma-dw" = "necrozma-dawn"
+"ttar" = "tyranitar"
+"pult" = "dragapult"
+"zard" = "charizard"
+"pex" = "toxapex"
+"dengo" = "gholdengo"
+"gambit" = "kingambit"
+
+[zh]
+"皮神" = "pikachu"
+"鬼龙" = "dragapult"
+"连击武道熊师" = "urshifu-rapid-strike"
+"一击武道熊师" = "urshifu-single-strike"
+"連擊武道熊師" = "urshifu-rapid-strike"
+"一擊武道熊師" = "urshifu-single-strike"
+
+[ja]
+"ガブ" = "garchomp"
+"マンダ" = "salamence"
+"バンギ" = "tyranitar"
+"ドラパ" = "dragapult"
+"ランド" = "landorus"
+"カミ" = "flutter-mane"

@@ -67,6 +67,7 @@ class PokemonSummary(BaseModel):
     flavor_text: LocalizedText
     is_legendary: bool
     is_mythical: bool
+    note: str | None = Field(default=None, description="Set when the name was matched fuzzily")
 
 
 class VgcFormat(BaseModel):

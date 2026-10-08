@@ -175,20 +175,36 @@ class SmogonClient:
 
     @staticmethod
     def resolve_key(chaos: ChaosFile, query: str, index: NameIndex | None = None) -> str:
-        """Map a user query (any language, Showdown or PokéAPI style) to a usage-file key."""
+        """Map a user query (any language, nickname, Showdown or PokéAPI style) to a usage key."""
         q = fold(query)
         if q in chaos.folded:
             return chaos.folded[q]
-        candidates = [name for f, name in chaos.folded.items() if f.startswith(q)]
+
+        def by_prefix(folded_name: str) -> list[str]:
+            return [name for f, name in chaos.folded.items() if f.startswith(folded_name)]
+
+        def longest_key_prefix_of(folded_variety: str) -> str | None:
+            keys = [name for f, name in chaos.folded.items() if folded_variety.startswith(f)]
+            return max(keys, key=len) if keys else None
+
+        candidates = by_prefix(q)
         if index is not None:
-            entry = index.lookup(query)
-            if entry is not None:
-                en = fold(entry.names.get("en", entry.slug))
-                if en in chaos.folded:
+            res = index.resolve(query)
+            if res is None and not candidates:
+                res = index.resolve_fuzzy(query)  # may raise AmbiguousName
+            if res is not None:
+                if res.variety:
+                    key = longest_key_prefix_of(fold(res.variety))
+                    if key:
+                        return key
+                en = fold(res.entry.names.get("en", res.entry.slug))
+                if res.form:
+                    key = longest_key_prefix_of(en + fold(res.form))
+                    if key and key != chaos.folded.get(en):
+                        return key
+                elif en in chaos.folded:
                     return chaos.folded[en]
-                candidates = [
-                    name for f, name in chaos.folded.items() if f.startswith(en)
-                ] or candidates
+                candidates = by_prefix(en) or candidates
         if len(candidates) == 1:
             return candidates[0]
         raise UsageNotFound(query, sorted(candidates)[:8])

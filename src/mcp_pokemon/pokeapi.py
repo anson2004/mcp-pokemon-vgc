@@ -14,7 +14,7 @@ from .models import (
     StatBlock,
     TypeSummary,
 )
-from .names import NameIndexLoader, SpeciesEntry, to_pokeapi_slug
+from .names import NameIndexLoader, Resolution, to_pokeapi_slug
 
 BASE = "https://pokeapi.co/api/v2/"
 
@@ -75,7 +75,7 @@ class PokeApiClient:
 
         async def fetch() -> dict[str, Any] | None:
             resp = await self._http.get(url)
-            if resp.status_code == 404:
+            if resp.status_code in (400, 404):  # PokéAPI answers 400 for non-ASCII slugs
                 return None
             resp.raise_for_status()
             data: dict[str, Any] = resp.json()
@@ -91,47 +91,48 @@ class PokeApiClient:
 
     async def resolve(
         self, query: str, form: str | None = None
-    ) -> tuple[dict[str, Any], dict[str, Any]]:
-        """Return (species_json, pokemon_json) for a query in any supported language.
+    ) -> tuple[dict[str, Any], dict[str, Any], str | None]:
+        """Return (species_json, pokemon_json, note) for a query in any supported language.
 
         Resolution order:
-        1. `query` is a species name in any language (index) -> default variety, or
-           the variety whose slug ends with `form`.
-        2. `query` is already a PokéAPI / Showdown variety slug (e.g. 'urshifu-rapid-strike').
+        1. exact species name in any language, alias, or localized form prefix (超级/メガ...)
+        2. a PokéAPI / Showdown variety slug (e.g. 'urshifu-rapid-strike')
+        3. 'species-form' split (e.g. 'ogerpon-wellspring')
+        4. unique substring of any official name (e.g. 咆哮虎 -> 炽焰咆哮虎)
         """
         index = await self._names.get()
-        entry: SpeciesEntry | None = index.lookup(query)
+        res: Resolution | None = index.resolve(query)
         slug = to_pokeapi_slug(query)
 
-        if entry is not None:
-            species = await self.species(entry.species_id)
-            assert species is not None
-            variety = self._choose_variety(species, form or None)
-            pokemon = await self.pokemon(variety)
-            if pokemon is None:
-                raise PokemonNotFound(f"{query} ({variety})", [])
-            return species, pokemon
-
-        pokemon = await self.pokemon(slug)
-        if pokemon is not None:
-            species = await self._get(pokemon["species"]["url"])
-            assert species is not None
-            return species, pokemon
-
-        # 'ogerpon-wellspring' style: species + form suffix in one string
-        if "-" in slug:
-            head, _, tail = slug.partition("-")
-            head_entry = index.lookup(head)
-            if head_entry is not None:
-                species = await self.species(head_entry.species_id)
+        if res is None:
+            pokemon = await self.pokemon(slug) if slug.isascii() else None
+            if pokemon is not None:
+                species = await self._get(pokemon["species"]["url"])
                 assert species is not None
-                variety = self._choose_variety(species, tail)
-                pokemon = await self.pokemon(variety)
-                if pokemon is not None:
-                    return species, pokemon
+                return species, pokemon, None
 
-        suggestions = [e.names.get("en") or e.slug for e in index.search(query, limit=5)]
-        raise PokemonNotFound(query, suggestions)
+            if "-" in slug and slug.isascii():
+                head, _, tail = slug.partition("-")
+                head_entry = index.lookup(head)
+                if head_entry is not None:
+                    species = await self.species(head_entry.species_id)
+                    assert species is not None
+                    variety = self._choose_variety(species, tail)
+                    pokemon = await self.pokemon(variety)
+                    if pokemon is not None:
+                        return species, pokemon, None
+
+            res = index.resolve_fuzzy(query)  # may raise AmbiguousName
+            if res is None:
+                raise PokemonNotFound(query, index.suggestions(query))
+
+        species = await self.species(res.entry.species_id)
+        assert species is not None
+        variety = res.variety or self._choose_variety(species, form or res.form)
+        pokemon = await self.pokemon(variety)
+        if pokemon is None:
+            raise PokemonNotFound(f"{query} ({variety})", [])
+        return species, pokemon, res.note
 
     @staticmethod
     def _choose_variety(species: dict[str, Any], form: str | None) -> str:
@@ -154,7 +155,7 @@ class PokeApiClient:
     async def summary(
         self, query: str, langs: tuple[Lang, ...], form: str | None = None
     ) -> PokemonSummary:
-        species, pokemon = await self.resolve(query, form)
+        species, pokemon, note = await self.resolve(query, form)
 
         types: list[TypeSummary] = []
         for t in sorted(pokemon["types"], key=lambda t: t["slot"]):
@@ -200,4 +201,5 @@ class PokeApiClient:
             flavor_text=pick_flavor(species["flavor_text_entries"], langs),
             is_legendary=species["is_legendary"],
             is_mythical=species["is_mythical"],
+            note=note,
         )

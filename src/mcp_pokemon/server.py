@@ -19,6 +19,7 @@ from .models import (
     VgcFormat,
     VgcUsage,
 )
+from .names import AmbiguousName
 from .pokeapi import PokemonNotFound
 from .smogon import FormatNotFound, UsageNotFound
 from .tools import describe as describe_tools
@@ -32,8 +33,9 @@ mcp = MCPServer(
         "Pokémon data in English, Japanese and Chinese (PokéAPI) plus VGC usage statistics "
         "(Smogon). Use search_pokemon / describe_pokemon for Pokédex facts and "
         "list_vgc_formats / top_vgc_usage / get_vgc_usage / compare_vgc for competitive data. "
-        "Pokémon names may be given in any supported language or in Showdown style "
-        "(e.g. 'Urshifu-Rapid-Strike')."
+        "Pokémon names may be given in any supported language, as common nicknames or "
+        "short forms (咆哮虎, ガブ, Lando-T), with localized form prefixes (超级暴飞龙, "
+        "メガボーマンダ, 灵兽土地云), or in Showdown style (e.g. 'Urshifu-Rapid-Strike')."
     ),
 )
 
@@ -52,7 +54,7 @@ MonthParam = Annotated[str | None, Field(description="YYYY-MM; default latest mo
 
 
 def _wrap(exc: Exception) -> ToolError:
-    if isinstance(exc, PokemonNotFound | UsageNotFound | FormatNotFound):
+    if isinstance(exc, PokemonNotFound | UsageNotFound | FormatNotFound | AmbiguousName):
         return ToolError(str(exc))
     log.exception("tool failed")
     return ToolError(f"{type(exc).__name__}: {exc}")
