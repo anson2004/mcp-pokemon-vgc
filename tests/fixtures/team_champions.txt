@@ -1,0 +1,53 @@
+Rillaboom @ Miracle Seed
+Ability: Grassy Surge
+Stat Points: 32 HP / 32 Atk / 2 SpD
+Adamant Nature
+- Grassy Glide
+- Fake Out
+- Wood Hammer
+- U-turn
+
+Incineroar @ Safety Goggles
+Ability: Intimidate
+Stat Points: 32 HP / 32 SpD
+Careful Nature
+- Fake Out
+- Parting Shot
+- Knock Off
+- Flare Blitz
+
+Salamence-Mega @ Salamencite
+Ability: Aerilate
+Stat Points: 32 Atk / 32 Spe
+Jolly Nature
+- Air Slash
+- Tailwind
+- Protect
+- Dragon Dance
+
+Sneasler @ Focus Sash
+Ability: Unburden
+Stat Points: 32 Atk / 32 Spe
+Jolly Nature
+- Dire Claw
+- Close Combat
+- Protect
+- Acrobatics
+
+Pikachu @ Light Ball
+Ability: Static
+Stat Points: 32 SpA / 32 Spe
+Timid Nature
+- Volt Switch
+- Fake Out
+- Protect
+- Thunderbolt
+
+Urshifu-Single-Strike @ Focus Sash
+Ability: Unseen Fist
+Stat Points: 32 Atk / 32 Spe
+Adamant Nature
+- Wicked Blow
+- Close Combat
+- Sucker Punch
+- Protect

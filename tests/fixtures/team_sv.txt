@@ -1,0 +1,40 @@
+Cat (Incineroar) (M) @ Safety Goggles
+Ability: Intimidate
+Level: 50
+Tera Type: Ghost
+EVs: 252 HP / 4 Atk / 252 SpD
+IVs: 0 Spe
+Careful Nature
+- Fake Out
+- Knock Off
+- Parting Shot
+- Flare Blitz
+
+Rillaboom @ Miracle Seed
+Ability: Grassy Surge
+Tera Type: Fire
+EVs: 252 HP / 252 Atk / 4 Def
+Adamant Nature
+- Grassy Glide
+- Fake Out
+- Wood Hammer
+- U-turn
+
+Sneasler (F) @ Focus Sash
+Ability: Unburden
+Jolly Nature
+EVs: 4 HP / 252 Atk / 252 Spe
+- Dire Claw
+- Close Combat
+- Protect
+- Acrobatics
+
+Urshifu-Rapid-Strike @ Choice Scarf
+Ability: Unseen Fist
+Shiny: Yes
+EVs: 252 Atk / 4 SpD / 252 Spe
+Jolly Nature
+- Surging Strikes
+- Close Combat
+- Aqua Jet
+- U-turn

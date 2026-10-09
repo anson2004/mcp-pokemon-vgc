@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from pydantic import BaseModel, Field, computed_field
+from pydantic import BaseModel, Field, computed_field, model_validator
 
 Lang = Literal["en", "ja", "ja-hrkt", "zh-hans", "zh-hant", "ko"]
 ALL_LANGS: tuple[Lang, ...] = ("en", "ja", "ja-hrkt", "zh-hans", "zh-hant", "ko")
@@ -155,3 +155,65 @@ class UsageRank(BaseModel):
     pokemon: str
     usage_percent: float
     raw_count: int
+
+
+# ---- team pastes and battle prediction (phase 3) -----------------------------------------
+
+StatKey = Literal["hp", "atk", "def", "spa", "spd", "spe"]
+SpreadScale = Literal["ev", "points"]
+
+
+class Spread(BaseModel):
+    scale: SpreadScale = Field(
+        description="'ev' = Scarlet/Violet 0–252 EVs; 'points' = Champions 0–32 stat points"
+    )
+    values: dict[StatKey, int]
+
+    @model_validator(mode="after")
+    def _check_range(self) -> Spread:
+        cap = 252 if self.scale == "ev" else 32
+        for stat, v in self.values.items():
+            if v < 0 or v > cap:
+                raise ValueError(f"{stat}={v} outside 0–{cap} for scale '{self.scale}'")
+        if self.scale == "ev" and sum(self.values.values()) > 510:
+            raise ValueError("EV total exceeds 510")
+        return self
+
+
+class TeamMember(BaseModel):
+    species: str = Field(description="Species as written in the paste")
+    key: str | None = Field(default=None, description="Smogon usage-file key once resolved")
+    nickname: str | None = None
+    item: str | None = None
+    ability: str | None = None
+    tera: str | None = None
+    nature: str | None = None
+    level: int = Field(default=50, ge=1, le=100)
+    moves: list[str] = Field(default_factory=list, max_length=4)
+    spread: Spread | None = None
+
+
+class Team(BaseModel):
+    members: list[TeamMember] = Field(min_length=1, max_length=6)
+    brought: list[str] | None = Field(
+        default=None, max_length=4, description="The four picked for a game, if known"
+    )
+    warnings: list[str] = Field(default_factory=list)
+
+
+class MatchupEdge(BaseModel):
+    a: str
+    b: str
+    edge: float = Field(description="score(a checks b) − score(b checks a); positive favours a")
+    a_checks_b: float | None = None
+    b_checks_a: float | None = None
+    no_data: bool = False
+
+
+class SpeedSummary(BaseModel):
+    a_faster: int
+    b_faster: int
+    ties: int
+    a_speed_control: list[str] = Field(default_factory=list)
+    b_speed_control: list[str] = Field(default_factory=list)
+    note: str | None = None

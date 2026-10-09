@@ -73,7 +73,7 @@ def parse_formats(html: str, month: str) -> list[VgcFormat]:
     ]
 
 
-def _check(name: str, v: Any) -> CheckCounter | None:
+def parse_check(name: str, v: Any) -> CheckCounter | None:
     """Parse a 'Checks and Counters' value: {'n','p','d'} (current) or [n, p, d] (older files)."""
     if isinstance(v, dict):
         n, p, d = v.get("n"), v.get("p"), v.get("d")
@@ -89,6 +89,9 @@ def _check(name: str, v: Any) -> CheckCounter | None:
         success_rate=round(float(p), 4),
         score=round(float(p) - 4 * float(d), 4),
     )
+
+
+_check = parse_check  # backwards-compatible alias
 
 
 def _ranked(weights: dict[str, float], denom: float, top_n: int) -> list[RankedItem]:
