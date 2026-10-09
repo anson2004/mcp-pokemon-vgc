@@ -1,0 +1,71 @@
+{
+ "id": 812,
+ "name": "rillaboom",
+ "height": 10,
+ "weight": 100,
+ "types": [
+  {
+   "slot": 1,
+   "type": {
+    "name": "grass",
+    "url": "https://pokeapi.co/api/v2/type/12/"
+   }
+  }
+ ],
+ "abilities": [],
+ "stats": [
+  {
+   "base_stat": 100,
+   "effort": 0,
+   "stat": {
+    "name": "hp",
+    "url": "https://pokeapi.co/api/v2/stat/1/"
+   }
+  },
+  {
+   "base_stat": 125,
+   "effort": 0,
+   "stat": {
+    "name": "attack",
+    "url": "https://pokeapi.co/api/v2/stat/2/"
+   }
+  },
+  {
+   "base_stat": 90,
+   "effort": 0,
+   "stat": {
+    "name": "defense",
+    "url": "https://pokeapi.co/api/v2/stat/3/"
+   }
+  },
+  {
+   "base_stat": 60,
+   "effort": 0,
+   "stat": {
+    "name": "special-attack",
+    "url": "https://pokeapi.co/api/v2/stat/4/"
+   }
+  },
+  {
+   "base_stat": 70,
+   "effort": 0,
+   "stat": {
+    "name": "special-defense",
+    "url": "https://pokeapi.co/api/v2/stat/5/"
+   }
+  },
+  {
+   "base_stat": 85,
+   "effort": 0,
+   "stat": {
+    "name": "speed",
+    "url": "https://pokeapi.co/api/v2/stat/6/"
+   }
+  }
+ ],
+ "species": {
+  "name": "rillaboom",
+  "url": "https://pokeapi.co/api/v2/pokemon-species/rillaboom/"
+ },
+ "forms": []
+}

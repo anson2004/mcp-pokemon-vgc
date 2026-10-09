@@ -1,0 +1,52 @@
+{
+ "id": 10,
+ "name": "fire",
+ "names": [
+  {
+   "name": "Fire",
+   "language": {
+    "name": "en",
+    "url": "https://pokeapi.co/api/v2/language/9/"
+   }
+  }
+ ],
+ "damage_relations": {
+  "double_damage_to": [
+   {
+    "name": "grass",
+    "url": "https://pokeapi.co/api/v2/type/12/"
+   },
+   {
+    "name": "ice",
+    "url": "https://pokeapi.co/api/v2/type/15/"
+   },
+   {
+    "name": "bug",
+    "url": "https://pokeapi.co/api/v2/type/7/"
+   },
+   {
+    "name": "steel",
+    "url": "https://pokeapi.co/api/v2/type/9/"
+   }
+  ],
+  "half_damage_to": [
+   {
+    "name": "fire",
+    "url": "https://pokeapi.co/api/v2/type/10/"
+   },
+   {
+    "name": "water",
+    "url": "https://pokeapi.co/api/v2/type/11/"
+   },
+   {
+    "name": "rock",
+    "url": "https://pokeapi.co/api/v2/type/6/"
+   },
+   {
+    "name": "dragon",
+    "url": "https://pokeapi.co/api/v2/type/16/"
+   }
+  ],
+  "no_damage_to": []
+ }
+}

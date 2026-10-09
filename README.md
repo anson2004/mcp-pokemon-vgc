@@ -55,11 +55,43 @@ uv run mcp dev src/mcp_pokemon/server.py
 | `top_vgc_usage(format_id?, rating?, month?, limit?)` | Usage ranking. |
 | `get_vgc_usage(pokemon, format_id?, rating?, month?, top_n?)` | One Pokémon's usage profile. `top_n` (default 5) caps every list. |
 | `compare_vgc(pokemon_a, pokemon_b, ...)` | Two profiles side by side, shared teammates (max 8), head-to-head check scores and teammate rates. |
+| `parse_vgc_team(team, format_id?, rating?, month?)` | Validate a Showdown team paste and resolve each species to its usage-file key. Returns the parsed team plus warnings; no prediction. |
+| `predict_vgc_battle(team_a, team_b, format_id?, rating?, month?, brought_a?, brought_b?)` | Heuristic P(team A wins) from two pastes, with the five biggest pairwise matchups, a speed summary, the signed components behind the number and a bring plan per side (given, or maximin over the 4-of-6 subsets). |
+| `analyze_vgc_team(team, format_id?, rating?, month?, top_n?)` | Which of the format's top 30 Pokémon score best against one team, and which members each one beats. |
 
 Resource: `pokemon://formats/latest`.
 
 Defaults: languages `en`, `zh-hans`, `ja` (add `zh-hant`, `ja-hrkt`, `ko` via `langs`); latest month,
 newest Pokémon Champions best-of-1 format, highest rating cutoff.
+
+## Battle prediction
+
+Teams are Showdown pastes (Pokepaste text, open team sheets export the same shape). `EVs:` and
+`Stat Points:` lines are both accepted; the scale is taken from the format (Champions = 0–32
+points). Nicknames (`Cat (Incineroar) @ Sitrus Berry`), genders and `IVs:` lines are fine.
+
+```
+Rillaboom @ Miracle Seed
+Ability: Grassy Surge
+Stat Points: 2 HP / 32 Atk / 32 Spe
+Jolly Nature
+- Grassy Glide
+- Fake Out
+- Wood Hammer
+- U-turn
+
+Incineroar @ Sitrus Berry
+Ability: Intimidate
+...
+```
+
+The number is a prior built only from usage data, not a damage calc, and player skill is not
+modelled. Components (all signed, positive favours A): `matchup` = mean Smogon check edge
+(`score(a checks b) − score(b checks a)`) over the brought pairs, with a type-chart estimate for
+pairs that have no check data; `speed` = share of brought pairs A outspeeds, halved when only one
+side carries Trick Room; `cohesion` = teammate-rate difference; `familiarity` = how standard each
+side's sets are. `win_probability_a = σ(Σ wᵢ·cᵢ)` with hand-picked weights in `predict.py`.
+The `key_matchups` and `speed` blocks are the useful part; read them before the number.
 
 ## Name resolution
 

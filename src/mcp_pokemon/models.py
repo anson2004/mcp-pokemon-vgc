@@ -201,13 +201,22 @@ class Team(BaseModel):
     warnings: list[str] = Field(default_factory=list)
 
 
+EdgeBasis = Literal["checks", "types", "none"]
+BringSource = Literal["given", "minimax", "best_response"]
+
+
 class MatchupEdge(BaseModel):
     a: str
     b: str
     edge: float = Field(description="score(a checks b) − score(b checks a); positive favours a")
     a_checks_b: float | None = None
     b_checks_a: float | None = None
-    no_data: bool = False
+    no_data: bool = Field(default=False, description="No checks/counters data in either direction")
+    basis: EdgeBasis = Field(
+        default="checks",
+        description="'checks' = Smogon check scores; 'types' = type-chart estimate used because "
+        "no check data exists; 'none' = no data, edge 0",
+    )
 
 
 class SpeedSummary(BaseModel):
@@ -217,3 +226,46 @@ class SpeedSummary(BaseModel):
     a_speed_control: list[str] = Field(default_factory=list)
     b_speed_control: list[str] = Field(default_factory=list)
     note: str | None = None
+
+
+class BringPlan(BaseModel):
+    pokemon: list[str] = Field(description="Usage-file keys of the Pokémon brought")
+    source: BringSource = Field(
+        description="'given' from the caller, 'best_response' to a given opposing four, "
+        "else 'minimax' over all 4-of-6 subsets"
+    )
+
+
+class BattlePrediction(BaseModel):
+    format_id: str
+    rating: int
+    month: str
+    win_probability_a: float = Field(description="Heuristic prior that team A wins (0–1)")
+    bring_a: BringPlan
+    bring_b: BringPlan
+    key_matchups: list[MatchupEdge] = Field(
+        description="Brought pairs with the largest |edge|; positive favours team A's Pokémon"
+    )
+    speed: SpeedSummary
+    components: dict[str, float] = Field(
+        description="Signed features behind the number (matchup, speed, cohesion, familiarity); "
+        "positive favours A"
+    )
+    warnings: list[str] = Field(default_factory=list)
+
+
+class Threat(BaseModel):
+    pokemon: str
+    usage_percent: float
+    edge: float = Field(description="Mean check edge against the team; positive = beats it")
+    beats: list[str] = Field(description="Team members it has a positive edge against")
+
+
+class TeamReport(BaseModel):
+    format_id: str
+    rating: int
+    month: str
+    pokemon: list[str] = Field(description="Resolved usage-file keys of the team")
+    threats: list[Threat] = Field(description="Meta Pokémon that score best against this team")
+    speed_control: list[str]
+    warnings: list[str] = Field(default_factory=list)

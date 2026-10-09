@@ -1,20 +1,27 @@
 import json
+from itertools import combinations
 
 import pytest
 
 from mcp_pokemon.models import Spread, Team, TeamMember
 from mcp_pokemon.names import NameIndex
 from mcp_pokemon.predict import (
+    WEIGHTS,
     check_score,
+    choose_bring,
     cohesion,
     effective_speed,
     familiarity,
     matchup_component,
     matchup_matrix,
+    predict,
     resolve_team,
     score_components,
     speed_summary,
     team_familiarity,
+    threats,
+    type_edge_fn,
+    type_effectiveness,
 )
 from mcp_pokemon.smogon import ChaosFile, UsageNotFound
 from mcp_pokemon.teams import TeamParseError, parse_team
@@ -185,3 +192,143 @@ def test_components_antisymmetric_on_fixture_teams():
     assert len(ab.matrix) == 16
     mirror = score_components(c, a, a, BASE_SPEED)
     assert all(v == 0 for v in mirror.values.values())
+
+
+# ---- type fallback, bring selection, prediction ------------------------------------------
+
+CHART = {
+    "electric": {"water": 2.0, "flying": 2.0, "ground": 0.0, "grass": 0.5},
+    "fighting": {"normal": 2.0, "steel": 2.0, "ghost": 0.0, "flying": 0.5},
+    "water": {"fire": 2.0, "water": 0.5},
+    "flying": {"fighting": 2.0, "electric": 0.5},
+    "dragon": {"dragon": 2.0},
+}
+TYPES = {
+    "Pikachu": ["electric"],
+    "Urshifu-Rapid-Strike": ["fighting", "water"],
+    "Salamence-Mega": ["dragon", "flying"],
+    "Sneasler": ["fighting", "poison"],
+}
+
+
+def test_type_effectiveness_and_edge():
+    assert type_effectiveness(CHART, "electric", ["fighting", "water"]) == 2.0
+    assert type_effectiveness(CHART, "electric", ["ground"]) == 0.0
+    assert type_effectiveness(CHART, "fire", ["water"]) == 1.0  # unknown attacker → neutral
+    edge = type_edge_fn(TYPES, CHART)
+    # Pikachu hits Urshifu-RS 2× (+1); Urshifu's best into Electric is neutral (0) → +0.05
+    assert edge("Pikachu", "Urshifu-Rapid-Strike") == pytest.approx(0.05)
+    assert edge("Urshifu-Rapid-Strike", "Pikachu") == pytest.approx(-0.05)
+    # Salamence: Flying 2× on Fighting (+1); Urshifu: Water neutral, Fighting 0.5× → best 0 → +0.05
+    assert edge("Salamence-Mega", "Urshifu-Rapid-Strike") == pytest.approx(0.05)
+    assert edge("Pikachu", "Rillaboom") is None  # typing unknown
+
+
+def test_matchup_matrix_type_fallback():
+    c = chaos()
+    edge = type_edge_fn(TYPES, CHART)
+    m = matchup_matrix(c, ["Pikachu"], ["Urshifu-Rapid-Strike", "Sneasler", "Rillaboom"], edge)
+    u = m[("Pikachu", "Urshifu-Rapid-Strike")]
+    assert u.no_data and u.basis == "types" and u.edge == pytest.approx(0.05)
+    # both Fighting-based with nothing super effective either way → 0 but still from types
+    assert m[("Pikachu", "Sneasler")].basis == "types"
+    r = m[("Pikachu", "Rillaboom")]
+    assert r.no_data and r.basis == "none" and r.edge == 0.0
+    # checks data wins over the fallback
+    with_data = matchup_matrix(c, ["Rillaboom"], ["Incineroar"], edge)[("Rillaboom", "Incineroar")]
+    assert with_data.basis == "checks" and not with_data.no_data
+    # antisymmetric with the fallback too
+    rev = matchup_matrix(c, ["Urshifu-Rapid-Strike"], ["Pikachu"], edge)
+    assert rev[("Urshifu-Rapid-Strike", "Pikachu")].edge == pytest.approx(-u.edge)
+
+
+def champions_team() -> Team:
+    return resolve_team(chaos(), parse_team(fixture("team_champions.txt"), scale="points"), index())
+
+
+def sv_team() -> Team:
+    return resolve_team(chaos(), parse_team(fixture("team_sv.txt"), scale="ev"), index())
+
+
+def test_choose_bring_minimax_and_given():
+    c = chaos()
+    a, b = champions_team(), sv_team()  # 6 and 4 members
+    bring_a, bring_b, plan_a, plan_b = choose_bring(c, a, b, BASE_SPEED)
+    assert len(bring_a) == 4 and len(plan_a.pokemon) == 4 and plan_a.source == "minimax"
+    assert len(set(plan_a.pokemon)) == 4 and set(plan_a.pokemon) <= {m.key for m in a.members}
+    assert plan_b.pokemon == [m.key for m in b.members] and plan_b.source == "minimax"
+    assert [m.key for m in bring_b] == plan_b.pokemon
+
+    a.brought = ["Rillaboom", "Incineroar", "Sneasler", "Pikachu"]
+    a = resolve_team(c, a, index())
+    _, _, plan_a, plan_b = choose_bring(c, a, b, BASE_SPEED)
+    assert plan_a.pokemon == a.brought and plan_a.source == "given"
+    assert plan_b.source == "best_response"
+
+    # maximin property: no other four of A has a better worst case against B's single four
+    a = champions_team()
+    _, _, plan_a, _ = choose_bring(c, a, b, BASE_SPEED)
+
+    def sub(members: list[TeamMember]) -> float:
+        v = score_components(c, members, b.members, BASE_SPEED).values
+        return WEIGHTS["matchup"] * v["matchup"] + WEIGHTS["speed"] * v["speed"]
+
+    best = max(sub(list(four)) for four in combinations(a.members, 4))
+    chosen = [m for m in a.members if m.key in plan_a.pokemon]
+    assert sub(chosen) == pytest.approx(best)
+
+
+def test_predict_symmetry_mirror_and_warnings():
+    c = chaos()
+    a, b = champions_team(), sv_team()
+    pab = predict(c, a, b, BASE_SPEED)
+    pba = predict(c, b, a, BASE_SPEED)
+    assert 0 < pab.win_probability_a < 1
+    assert pab.win_probability_a == pytest.approx(1 - pba.win_probability_a, abs=1e-3)
+    assert pab.bring_a.pokemon == pba.bring_b.pokemon
+    assert pab.bring_b.pokemon == pba.bring_a.pokemon
+    for k, v in pab.components.items():
+        assert v == pytest.approx(-pba.components[k], abs=1e-6), k
+    assert set(pab.components) == set(WEIGHTS)
+    assert 1 <= len(pab.key_matchups) <= 5
+    assert all(e.basis != "none" for e in pab.key_matchups)
+    edges = [abs(e.edge) for e in pab.key_matchups]
+    assert edges == sorted(edges, reverse=True)
+    assert pab.format_id == "gen9championsvgc2026regmc" and pab.rating == 1760
+    # SV paste carries Tera types; the format is Champions → one warning
+    assert any("Tera" in w for w in pab.warnings)
+    assert any(w.startswith("team A: ") or w.startswith("team B: ") for w in pab.warnings)
+
+    mirror = predict(c, a, a, BASE_SPEED)
+    assert mirror.win_probability_a == 0.5
+    assert mirror.bring_a.pokemon == mirror.bring_b.pokemon
+    assert all(v == 0 for v in mirror.components.values())
+
+
+def test_predict_respects_given_brought_and_speed_block():
+    c = chaos()
+    a, b = champions_team(), sv_team()
+    a.brought = ["Salamence-Mega", "Sneasler", "Pikachu", "Urshifu-Single-Strike"]
+    a = resolve_team(c, a, index())
+    p = predict(c, a, b, BASE_SPEED)
+    assert p.bring_a.pokemon == a.brought and p.bring_a.source == "given"
+    assert p.speed.a_faster + p.speed.b_faster + p.speed.ties == 16
+    assert p.speed.b_speed_control == []  # team_sv has no speed control among its four
+
+
+def test_threats_rank_meta_against_team():
+    c = chaos()
+    edge = type_edge_fn(TYPES, CHART)
+    # Rillaboom checks Incineroar (+0.16 vs 0.10) → it threatens a team of Incineroar + Pikachu
+    ts = threats(c, ["Incineroar", "Pikachu"], c.ranking, edge, top_n=3)
+    names = [t.pokemon for t in ts]
+    assert "Incineroar" not in names and "Pikachu" not in names  # own members excluded
+    rilla = next(t for t in ts if t.pokemon == "Rillaboom")
+    assert rilla.beats == ["Incineroar"]
+    assert rilla.edge == pytest.approx((0.16 - 0.10) / 2, abs=1e-3)
+    assert rilla.usage_percent > 0
+    assert len(ts) <= 3 and [t.edge for t in ts] == sorted((t.edge for t in ts), reverse=True)
+    # a pool member with no data of any kind against the team is skipped entirely
+    all_ts = threats(c, ["Incineroar", "Pikachu"], c.ranking, edge, top_n=99)
+    assert "Urshifu-Single-Strike" not in [t.pokemon for t in all_ts]
+    assert "Salamence-Mega" in [t.pokemon for t in all_ts]  # typing known vs Pikachu

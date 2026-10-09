@@ -49,6 +49,10 @@ def mocked(deps: Deps):
         router.get(f"{base}pokemon/urshifu-rapid-strike").respond(
             json=json.loads(fixture("pokemon_urshifu-rapid-strike.json"))
         )
+        for slug in ("rillaboom", "incineroar", "sneasler", "salamence-mega"):
+            router.get(f"{base}pokemon/{slug}").respond(
+                json=json.loads(fixture(f"pokemon_{slug}.json"))
+            )
         router.get(url__regex=rf"{base}pokemon/.*").respond(404)
         router.get(url__regex=rf"{base}type/\d+/?").mock(
             side_effect=lambda req: httpx.Response(

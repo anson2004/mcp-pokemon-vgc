@@ -11,9 +11,12 @@ from pydantic import Field
 
 from .deps import get_deps
 from .models import (
+    BattlePrediction,
     Lang,
     NameResolution,
     PokemonSummary,
+    Team,
+    TeamReport,
     UsageRank,
     VgcComparison,
     VgcFormat,
@@ -22,7 +25,9 @@ from .models import (
 from .names import AmbiguousName
 from .pokeapi import PokemonNotFound
 from .smogon import FormatNotFound, UsageNotFound
+from .teams import TeamParseError
 from .tools import describe as describe_tools
+from .tools import predict as predict_tools
 from .tools import vgc as vgc_tools
 
 log = logging.getLogger(__name__)
@@ -34,6 +39,9 @@ mcp = MCPServer(
         "(Smogon). Use describe_pokemon for Pokédex facts, resolve_pokemon only to turn a "
         "nickname into official names, and "
         "list_vgc_formats / top_vgc_usage / get_vgc_usage / compare_vgc for competitive data. "
+        "Teams are Showdown pastes (open team sheets work): parse_vgc_team checks a paste, "
+        "predict_vgc_battle gives a win probability with key matchups and bring plans, "
+        "analyze_vgc_team lists the meta Pokémon that beat one team. "
         "Pokémon names may be given in any supported language, as common nicknames or "
         "short forms (咆哮虎, ガブ, Lando-T), with localized form prefixes (超级暴飞龙, "
         "メガボーマンダ, 灵兽土地云), or in Showdown style (e.g. 'Urshifu-Rapid-Strike')."
@@ -52,10 +60,23 @@ RatingParam = Annotated[
     int | None, Field(description="Rating cutoff; default the highest available")
 ]
 MonthParam = Annotated[str | None, Field(description="YYYY-MM; default latest month")]
+TeamParam = Annotated[
+    str,
+    Field(
+        description="Showdown team paste (up to six Pokémon separated by blank lines; "
+        "'EVs:' or 'Stat Points:' lines both accepted)"
+    ),
+]
+BroughtParam = Annotated[
+    list[str] | None,
+    Field(description="The four actually brought, if known (names or nicknames from the paste)"),
+]
 
 
 def _wrap(exc: Exception) -> ToolError:
-    if isinstance(exc, PokemonNotFound | UsageNotFound | FormatNotFound | AmbiguousName):
+    if isinstance(
+        exc, PokemonNotFound | UsageNotFound | FormatNotFound | AmbiguousName | TeamParseError
+    ):
         return ToolError(str(exc))
     log.exception("tool failed")
     return ToolError(f"{type(exc).__name__}: {exc}")
@@ -159,6 +180,64 @@ async def compare_vgc(
     try:
         return await vgc_tools.compare_vgc(
             get_deps(), pokemon_a, pokemon_b, format_id, rating, month, top_n
+        )
+    except Exception as exc:
+        raise _wrap(exc) from exc
+
+
+@mcp.tool()
+async def parse_vgc_team(
+    team: TeamParam,
+    format_id: FormatParam = None,
+    rating: RatingParam = None,
+    month: MonthParam = None,
+) -> Team:
+    """Validate a team paste and resolve each species to its usage-file key. No prediction.
+
+    Cheap way to check a paste before predict_vgc_battle; warnings list anything ignored.
+    """
+    try:
+        return await predict_tools.parse_vgc_team(get_deps(), team, format_id, rating, month)
+    except Exception as exc:
+        raise _wrap(exc) from exc
+
+
+@mcp.tool()
+async def predict_vgc_battle(
+    team_a: TeamParam,
+    team_b: TeamParam,
+    format_id: FormatParam = None,
+    rating: RatingParam = None,
+    month: MonthParam = None,
+    brought_a: BroughtParam = None,
+    brought_b: BroughtParam = None,
+) -> BattlePrediction:
+    """Estimate P(team A wins) from two team pastes, with the key matchups and a bring plan each.
+
+    Heuristic prior from Smogon check scores, speed tiers, teammate cohesion and set familiarity;
+    player skill is not modelled, so read key_matchups and speed rather than trusting the number.
+    When a side's brought four is not given, it is chosen by maximin over the 4-of-6 subsets.
+    """
+    try:
+        return await predict_tools.predict_vgc_battle(
+            get_deps(), team_a, team_b, format_id, rating, month, brought_a, brought_b
+        )
+    except Exception as exc:
+        raise _wrap(exc) from exc
+
+
+@mcp.tool()
+async def analyze_vgc_team(
+    team: TeamParam,
+    format_id: FormatParam = None,
+    rating: RatingParam = None,
+    month: MonthParam = None,
+    top_n: int = 5,
+) -> TeamReport:
+    """Meta Pokémon (top 30 of the format) that score best against this team, and whom they beat."""
+    try:
+        return await predict_tools.analyze_vgc_team(
+            get_deps(), team, format_id, rating, month, top_n
         )
     except Exception as exc:
         raise _wrap(exc) from exc

@@ -1,0 +1,78 @@
+{
+ "id": 727,
+ "name": "incineroar",
+ "height": 10,
+ "weight": 100,
+ "types": [
+  {
+   "slot": 1,
+   "type": {
+    "name": "fire",
+    "url": "https://pokeapi.co/api/v2/type/10/"
+   }
+  },
+  {
+   "slot": 2,
+   "type": {
+    "name": "dark",
+    "url": "https://pokeapi.co/api/v2/type/17/"
+   }
+  }
+ ],
+ "abilities": [],
+ "stats": [
+  {
+   "base_stat": 95,
+   "effort": 0,
+   "stat": {
+    "name": "hp",
+    "url": "https://pokeapi.co/api/v2/stat/1/"
+   }
+  },
+  {
+   "base_stat": 115,
+   "effort": 0,
+   "stat": {
+    "name": "attack",
+    "url": "https://pokeapi.co/api/v2/stat/2/"
+   }
+  },
+  {
+   "base_stat": 90,
+   "effort": 0,
+   "stat": {
+    "name": "defense",
+    "url": "https://pokeapi.co/api/v2/stat/3/"
+   }
+  },
+  {
+   "base_stat": 80,
+   "effort": 0,
+   "stat": {
+    "name": "special-attack",
+    "url": "https://pokeapi.co/api/v2/stat/4/"
+   }
+  },
+  {
+   "base_stat": 90,
+   "effort": 0,
+   "stat": {
+    "name": "special-defense",
+    "url": "https://pokeapi.co/api/v2/stat/5/"
+   }
+  },
+  {
+   "base_stat": 60,
+   "effort": 0,
+   "stat": {
+    "name": "speed",
+    "url": "https://pokeapi.co/api/v2/stat/6/"
+   }
+  }
+ ],
+ "species": {
+  "name": "incineroar",
+  "url": "https://pokeapi.co/api/v2/pokemon-species/incineroar/"
+ },
+ "forms": []
+}

@@ -89,6 +89,11 @@ class PokeApiClient:
     async def pokemon(self, id_or_slug: int | str) -> dict[str, Any] | None:
         return await self._get(f"pokemon/{id_or_slug}")
 
+    async def type_data(self, id_or_url: int | str) -> dict[str, Any] | None:
+        """Raw PokéAPI type JSON (names + damage_relations) by id, slug or full URL."""
+        ref = str(id_or_url)
+        return await self._get(ref if ref.startswith("http") else f"type/{ref}")
+
     async def resolve(
         self, query: str, form: str | None = None
     ) -> tuple[dict[str, Any], dict[str, Any], str | None]:

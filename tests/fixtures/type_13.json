@@ -44,5 +44,37 @@
     "url": "https://pokeapi.co/api/v2/language/12/"
    }
   }
- ]
+ ],
+ "damage_relations": {
+  "double_damage_to": [
+   {
+    "name": "water",
+    "url": "https://pokeapi.co/api/v2/type/11/"
+   },
+   {
+    "name": "flying",
+    "url": "https://pokeapi.co/api/v2/type/3/"
+   }
+  ],
+  "half_damage_to": [
+   {
+    "name": "electric",
+    "url": "https://pokeapi.co/api/v2/type/13/"
+   },
+   {
+    "name": "grass",
+    "url": "https://pokeapi.co/api/v2/type/12/"
+   },
+   {
+    "name": "dragon",
+    "url": "https://pokeapi.co/api/v2/type/16/"
+   }
+  ],
+  "no_damage_to": [
+   {
+    "name": "ground",
+    "url": "https://pokeapi.co/api/v2/type/5/"
+   }
+  ]
+ }
 }

@@ -1,7 +1,11 @@
 import pytest
 
 from mcp_pokemon.pokeapi import PokemonNotFound
-from mcp_pokemon.tools import describe, vgc
+from mcp_pokemon.smogon import UsageNotFound
+from mcp_pokemon.teams import TeamParseError
+from mcp_pokemon.tools import describe, predict, vgc
+
+from .conftest import fixture
 
 
 async def test_describe_pikachu_multilingual(deps, mocked):
@@ -76,3 +80,70 @@ async def test_vgc_tools(deps, mocked):
     # only the two listed chaos files were downloaded, and each once
     calls = [c.request.url.path for c in mocked.calls if c.request.url.path.endswith(".json")]
     assert sorted(set(calls)) == sorted(calls)
+
+
+async def test_parse_vgc_team_tool(deps, mocked):
+    team = await predict.parse_vgc_team(deps, fixture("team_champions.txt"))
+    assert [m.key for m in team.members] == [
+        "Rillaboom",
+        "Incineroar",
+        "Salamence-Mega",
+        "Sneasler",
+        "Pikachu",
+        "Urshifu-Single-Strike",
+    ]
+    assert team.members[0].spread is not None and team.members[0].spread.scale == "points"
+    assert any("no checks/counters" in w for w in team.warnings)
+
+    with pytest.raises(UsageNotFound):
+        await predict.parse_vgc_team(deps, "Garchomp @ Choice Scarf\nAbility: Rough Skin")
+    with pytest.raises(TeamParseError):
+        await predict.parse_vgc_team(deps, "   \n\n")
+
+
+async def test_predict_vgc_battle_tool(deps, mocked):
+    p = await predict.predict_vgc_battle(
+        deps, fixture("team_champions.txt"), fixture("team_sv.txt"), rating=1500
+    )
+    assert p.format_id == "gen9championsvgc2026regmc" and p.rating == 1500
+    assert 0 < p.win_probability_a < 1
+    assert len(p.bring_a.pokemon) == 4 and p.bring_a.source == "minimax"
+    assert len(p.bring_b.pokemon) == 4
+    assert p.speed.note is None  # every member has a PokéAPI stats stub
+    assert p.speed.a_faster + p.speed.b_faster + p.speed.ties == 16
+    # pairs without check data fall back to the type chart fetched from PokéAPI
+    assert any(e.basis == "types" for e in p.key_matchups) or any(
+        "type chart" in w for w in p.warnings
+    )
+    assert any("Tera" in w for w in p.warnings)
+
+    q = await predict.predict_vgc_battle(
+        deps,
+        fixture("team_champions.txt"),
+        fixture("team_sv.txt"),
+        rating=1500,
+        brought_a=["rilla", "Mence", "Sneasler", "Pikachu"],
+        brought_b=["Cat", "Rillaboom", "Sneasler", "Urshifu"],
+    )
+    assert q.bring_a.pokemon == ["Rillaboom", "Salamence-Mega", "Sneasler", "Pikachu"]
+    assert q.bring_a.source == "given" and q.bring_b.source == "given"
+    assert q.bring_b.pokemon[0] == "Incineroar"  # nickname "Cat" from the paste header
+
+    r = await predict.predict_vgc_battle(
+        deps, fixture("team_sv.txt"), fixture("team_champions.txt"), rating=1500
+    )
+    assert r.win_probability_a == pytest.approx(1 - p.win_probability_a, abs=1e-3)
+    # one chaos download, pokemon/type lookups cached across the three calls
+    paths = [c.request.url.path for c in mocked.calls if c.request.url.path.endswith(".json")]
+    assert len(paths) == 1
+
+
+async def test_analyze_vgc_team_tool(deps, mocked):
+    rep = await predict.analyze_vgc_team(deps, fixture("team_sv.txt"), top_n=3)
+    assert rep.pokemon == ["Incineroar", "Rillaboom", "Sneasler", "Urshifu-Rapid-Strike"]
+    assert rep.speed_control == []
+    assert 1 <= len(rep.threats) <= 3
+    assert all(t.pokemon not in rep.pokemon for t in rep.threats)
+    assert all(set(t.beats) <= set(rep.pokemon) for t in rep.threats)
+    edges = [t.edge for t in rep.threats]
+    assert edges == sorted(edges, reverse=True)

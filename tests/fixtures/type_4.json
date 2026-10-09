@@ -1,0 +1,49 @@
+{
+ "id": 4,
+ "name": "poison",
+ "names": [
+  {
+   "name": "Poison",
+   "language": {
+    "name": "en",
+    "url": "https://pokeapi.co/api/v2/language/9/"
+   }
+  }
+ ],
+ "damage_relations": {
+  "double_damage_to": [
+   {
+    "name": "grass",
+    "url": "https://pokeapi.co/api/v2/type/12/"
+   },
+   {
+    "name": "fairy",
+    "url": "https://pokeapi.co/api/v2/type/18/"
+   }
+  ],
+  "half_damage_to": [
+   {
+    "name": "poison",
+    "url": "https://pokeapi.co/api/v2/type/4/"
+   },
+   {
+    "name": "ground",
+    "url": "https://pokeapi.co/api/v2/type/5/"
+   },
+   {
+    "name": "rock",
+    "url": "https://pokeapi.co/api/v2/type/6/"
+   },
+   {
+    "name": "ghost",
+    "url": "https://pokeapi.co/api/v2/type/8/"
+   }
+  ],
+  "no_damage_to": [
+   {
+    "name": "steel",
+    "url": "https://pokeapi.co/api/v2/type/9/"
+   }
+  ]
+ }
+}
