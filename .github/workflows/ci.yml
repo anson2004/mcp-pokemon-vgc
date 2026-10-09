@@ -54,7 +54,12 @@ jobs:
                   await s.initialize()
                   names = sorted(t.name for t in (await s.list_tools()).tools)
                   print(names)
-                  assert len(names) == 6, names
+                  expected = [
+                      "analyze_vgc_team", "compare_vgc", "describe_pokemon",
+                      "get_vgc_usage", "list_vgc_formats", "parse_vgc_team",
+                      "predict_vgc_battle", "resolve_pokemon", "top_vgc_usage",
+                  ]
+                  assert names == expected, names
 
           asyncio.run(main())
           PY
